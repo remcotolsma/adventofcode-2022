@@ -34,4 +34,23 @@ foreach ( $rows as $row ) {
 	}
 }
 
-var_dump( $stacks );
+$procedures = explode( "\n", $procedure_string );
+
+foreach ( $procedures as $procedure ) {
+	list( $number, $from, $to ) = sscanf( $procedure, 'move %s from %s to %s' );
+
+	foreach ( range( 1, $number ) as $i ) {
+		$crate = array_pop( $stacks[ $from ] );
+
+		array_push( $stacks[ $to ], $crate );
+	}
+}
+
+$top_crates = array_map(
+	function( $stack ) {
+		return end( $stack );
+	},
+	$stacks
+);
+
+echo implode( '', $top_crates );
